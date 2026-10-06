@@ -1,1 +1,56 @@
 @import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-workspot-blue-600: #2875F5;
+  --color-workspot-blue-200: #EDF5FF;
+
+  /* Gray Scale */
+  --color-workspot-gray-900: #0F1A2E;
+  --color-workspot-gray-700: #334054;
+  --color-workspot-gray-500: #546178;
+  --color-workspot-gray-300: #B2BAC7;
+  --color-workspot-gray-200: #E0E5ED;
+  --color-workspot-gray-100: #F5F7FB;
+
+  /* Semantic Colors */
+  --color-primary: var(--color-workspot-blue-600);
+  --color-primary-soft: var(--color-workspot-blue-200);
+
+  --color-text-primary: var(--color-workspot-gray-900);
+  --color-text-secondary: var(--color-workspot-gray-700);
+  --color-text-description: var(--color-workspot-gray-500);
+
+  --color-border: var(--color-workspot-gray-300);
+
+  --color-background: #FFFFFF;
+  --color-background-subtle: var(--color-workspot-gray-100);
+  --color-background-muted: var(--color-workspot-gray-200);
+
+  /* Font */
+  --font-workspot: "Pretendard Variable", "Pretendard", system-ui, sans-serif;
+}
+
+@utility text-title {
+  font-size: 24px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+@utility text-body {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility text-small {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility text-caption {
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 400;
+}
