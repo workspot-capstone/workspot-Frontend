@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CafeDetail from './pages/CafeDetail'
-import Home from './pages/Home'
-import Map from './pages/Map'
+import { Home } from './pages/Home'
+import { Map } from './pages/Map'
 
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },

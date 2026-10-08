@@ -1,5 +1,12 @@
-function Home() {
-	return <main><h1>Workspot</h1></main>
-}
+import { Header } from '../components/Header'
 
-export default Home
+export const Home = () => {
+  return (
+    <>
+      <Header
+        title="Workspot"
+        content={`더 좋은 공간에서, \n더 좋은 집중을`}
+        contentClassName="whitespace-pre-line text-small text-workspot-gray-500" />
+    </>
+  )
+}
