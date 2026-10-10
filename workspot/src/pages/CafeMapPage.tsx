@@ -10,12 +10,12 @@ export const CafeMapPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div>
       <Header
         title="Workspot"
         content={<ServiceArea content="명지대 일대" />}
+        extraContent={<Search onSearch={handleSearch} />}
         contentClassName="w-fit" />
-      <Search onSearch={handleSearch} />
       <BottomSheet />
     </div>
   )

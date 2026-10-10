@@ -13,11 +13,9 @@ export const Home = () => {
       <Header
         title="Workspot"
         content={`더 좋은 공간에서, \n더 좋은 집중을`}
+        extraContent={<ServiceArea content="명지대 일대" />}
         contentClassName="whitespace-pre-line text-small text-workspot-gray-500" />
       <div className="w-full px-4">
-        <div className="w-full">
-          <ServiceArea content="서비스 지역 : 명지대 일대" />
-        </div>
         <h1 className="w-full mt-12 mb-6 text-left text-title text-workspot-gray-900 whitespace-pre-line">{`오늘 작업하기 쉬운 장소,\n 쉽게 찾아 보세요.`}</h1>
         <Search onSearch={handleSearch} />
         </div>
