@@ -6,10 +6,10 @@ export const CafeList = ({cafes} : {cafes: CafeListProps[]}) => {
       {cafes.map((cafe) => (
         <div key={cafe.id} className="flex items-center m-3 gap-2.5">
           <img src={cafe.imageUrl} alt="카페 이미지" className="w-18 h-16 rounded-md" />
-          <div>
+          <div className="w-full">
             <div className="flex justify-between items-center">
               <h2 className="text-body font-bold text-text-primary">{cafe.name}</h2>
-              <p className="text-body font-bold text-primary">{cafe.score}</p>
+              <p className="text-small font-semibold text-primary">적합도 {cafe.score}%</p>
             </div>
             <p className="text-small text-text-description">{cafe.distance} · {cafe.address}</p>
             <div>
