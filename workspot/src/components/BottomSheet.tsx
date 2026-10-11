@@ -1,10 +1,22 @@
+import { motion } from "framer-motion";
 import { mockCafes } from "../mocks/mockCafes"
 import { CafeList } from "./CafeList"
+import BottomSheetHeader from "./BottomSheetHeader";
+import { BottomSheetContentLayout } from "./BottomSheetContentLayout"
+import { useBottomSheet } from "../hooks/useBottomSheet";
 
 export const BottomSheet = () => {
+  const { sheet, content, y } = useBottomSheet(); 
   return (
-    <>
-      <CafeList cafes={mockCafes} />
-    </>
-  )
+    <motion.div
+      ref={sheet}
+      style={{ y }}
+      className="fixed inset-x-0 top-0 z-10 flex h-[calc(100dvh-60px)] flex-col rounded-t-lg bg-white shadow-[0_0_10px_rgba(0,0,0,0.6)]"
+    >
+      <BottomSheetHeader />
+      <BottomSheetContentLayout contentRef={content}>
+        <CafeList cafes={mockCafes} />
+      </BottomSheetContentLayout>
+    </motion.div>
+  );
 }
