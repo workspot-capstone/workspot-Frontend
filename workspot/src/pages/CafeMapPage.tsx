@@ -1,5 +1,6 @@
 import { BottomSheet } from "../components/BottomSheet";
 import { Header } from "../components/Header"
+import { MapView } from "../components/MapView";
 import { Search } from "../components/Search";
 import { ServiceArea } from "../components/ServiceArea"
 
@@ -16,6 +17,7 @@ export const CafeMapPage = () => {
         content={<ServiceArea content="명지대 일대" />}
         extraContent={<Search onSearch={handleSearch} />}
         contentClassName="w-fit" />
+      <MapView />
       <BottomSheet />
     </div>
   )
