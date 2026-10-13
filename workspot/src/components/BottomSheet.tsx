@@ -9,7 +9,8 @@ import { useState } from "react";
 
 export const BottomSheet = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const { sheet, content, y } = useBottomSheet(); 
+  const contentMode = selectedId === null ? "list" : "detail"
+  const { sheet, content, y } = useBottomSheet(contentMode); 
   return (
     <motion.div
       ref={sheet}
