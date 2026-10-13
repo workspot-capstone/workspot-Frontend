@@ -11,13 +11,15 @@ export const CafeMapPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex h-dvh flex-col">
       <Header
         title="Workspot"
         content={<ServiceArea content="명지대 일대" />}
         extraContent={<Search onSearch={handleSearch} />}
         contentClassName="w-fit" />
-      <MapView />
+        <div className="flex-1">
+          <MapView />
+        </div>
       <BottomSheet />
     </div>
   )

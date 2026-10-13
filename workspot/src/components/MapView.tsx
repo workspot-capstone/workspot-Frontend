@@ -16,7 +16,7 @@ export const MapView = () => {
     <Map
       center={{ lat: 37.222, lng: 127.19 }}
       level={3}
-      style={{ width: "100%", height: "500px" }}
+      style={{ width: "100%", height: "100%" }}
     />
   )
 }
