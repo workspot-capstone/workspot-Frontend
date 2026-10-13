@@ -1,11 +1,14 @@
 import { motion } from "framer-motion";
 import { mockCafes } from "../mocks/mockCafes"
 import { CafeList } from "./CafeList"
+import { CafeDetail } from "./CafeDetail";
 import BottomSheetHeader from "./BottomSheetHeader";
 import { BottomSheetContentLayout } from "./BottomSheetContentLayout"
 import { useBottomSheet } from "../hooks/useBottomSheet";
+import { useState } from "react";
 
 export const BottomSheet = () => {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const { sheet, content, y } = useBottomSheet(); 
   return (
     <motion.div
@@ -15,7 +18,11 @@ export const BottomSheet = () => {
     >
       <BottomSheetHeader />
       <BottomSheetContentLayout contentRef={content}>
-        <CafeList cafes={mockCafes} />
+        {selectedId !== null ? (
+          <CafeDetail id={selectedId} />
+        ) : (
+          <CafeList cafes={mockCafes} onSelect={setSelectedId} />
+        )}
       </BottomSheetContentLayout>
     </motion.div>
   );
