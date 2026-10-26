@@ -18,7 +18,7 @@ export const Home = () => {
       <div className="w-full px-4">
         <h1 className="w-full mt-12 mb-6 text-left text-title text-workspot-gray-900 whitespace-pre-line">{`오늘 작업하기 쉬운 장소,\n 쉽게 찾아 보세요.`}</h1>
         <Search onSearch={handleSearch} />
-        </div>
+      </div>
     </div>
   )
 }
