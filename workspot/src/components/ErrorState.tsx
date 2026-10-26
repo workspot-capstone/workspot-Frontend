@@ -1,10 +1,5 @@
 import errorStateImage from '../assets/error-state.png'
-
-type ErrorStateProps = {
-  message?: string;
-  description?: string;
-  onRetry?: () => void;
-}
+import type { ErrorStateProps } from '../types/ErrorStateProps'
 
 export const ErrorState = ({ message, description, onRetry }: ErrorStateProps) => {
   return (

@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-
-export type Coordinates = {
-  latitude: number;
-  longitude: number;
-};
+import type { Coordinates } from '../types/MapProps';
 
 export const useGeolocation = () => {
   const [position, setPosition] = useState<Coordinates | null>(null);

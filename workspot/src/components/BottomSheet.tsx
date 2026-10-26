@@ -7,10 +7,7 @@ import { BottomSheetContentLayout } from "./BottomSheetContentLayout"
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { useState } from "react";
 import { LocateFixed } from "lucide-react";
-
-type BottomSheetProps = {
-  onReturnToCurrentPosition: (() => void) | null;
-};
+import type { BottomSheetProps } from "../types/BottomSheetProps";
 
 export const BottomSheet = ({ onReturnToCurrentPosition }: BottomSheetProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);

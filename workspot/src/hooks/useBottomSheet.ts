@@ -1,8 +1,20 @@
 import { animate, useMotionValue } from "framer-motion"
 import { useCallback, useEffect, useRef } from "react"
 import { getMaxY, MIN_Y, MIDDLE_SNAP_BOTTOM_MARGIN } from "../constants/bottomSheet"
-import type { BottomSheetContentMode, BottomSheetMetrics } from "../types/BottomSheetProps"
+import type { BottomSheetContentMode } from "../types/BottomSheetProps"
 
+interface BottomSheetMetrics {
+  touchStart: {
+    sheetY: number;
+    touchY: number;
+  }
+  touchMove: {
+    prevTouchY?: number;
+    movingDirection: "none" | "down" | "up";
+  }
+  isContentAreaTouched: boolean;
+  isSheetDragging: boolean;
+}
 
 const createInitialMetrics = (): BottomSheetMetrics => ({
   touchStart: {

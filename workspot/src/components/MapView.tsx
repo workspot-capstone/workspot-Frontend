@@ -1,12 +1,7 @@
 import { CustomOverlayMap, Map, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
 import { mockCafes } from "../mocks/mockCafes";
-import type { Coordinates } from "../hooks/useGeolocation";
 import { CurrentLocation } from "./CurrentLocation";
-
-type MapViewProps = {
-  currentPosition: Coordinates | null;
-  onMapCreate: (map: kakao.maps.Map) => void;
-};
+import type { MapViewProps } from "../types/MapProps";
 
 export const MapView = ({ currentPosition, onMapCreate }: MapViewProps) => {
   const [loading, error] = useKakaoLoader({
