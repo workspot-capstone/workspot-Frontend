@@ -3,19 +3,19 @@ import { mockCafes } from "../mocks/mockCafes";
 import { CurrentLocation } from "./CurrentLocation";
 import type { MapViewProps } from "../types/MapProps";
 
-export const MapView = ({ currentPosition, onMapCreate }: MapViewProps) => {
+export const MapView = ({ currentPosition, onMapCreate, onSelectCafe }: MapViewProps) => {
   const [loading, error] = useKakaoLoader({
     appkey: import.meta.env.VITE_KAKAO_MAP_API_KEY,
   });
 
   // 지도 중심 좌표
   const center = currentPosition ? {
-      lat: currentPosition.latitude,
-      lng: currentPosition.longitude,
-} : {
-      lat: 37.222,
-      lng: 127.19,
-    };
+    lat: currentPosition.latitude,
+    lng: currentPosition.longitude,
+  } : {
+    lat: 37.222,
+    lng: 127.19,
+  };
 
   // 카페 TOP 5를 기준으로 Bound 설정
   const handleMapCreate = (map: kakao.maps.Map) => {
@@ -73,6 +73,7 @@ export const MapView = ({ currentPosition, onMapCreate }: MapViewProps) => {
               lng: cafe.longitude,
             }}
             title={cafe.name}
+            onClick={() => onSelectCafe(cafe.id)}
           />
         ))}
       </Map>

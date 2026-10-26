@@ -7,6 +7,7 @@ import { ServiceArea } from "../components/ServiceArea"
 import { useGeolocation } from "../hooks/useGeolocation";
 
 export const CafeMapPage = () => {
+  const [selectedCafeId, setSelectedCafeId] = useState<number | null>(null);
   const { position } = useGeolocation();
   // MapView에서 생성된 지도 인스턴스를 저장 
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
@@ -39,9 +40,13 @@ export const CafeMapPage = () => {
           <MapView
             currentPosition={position}
             onMapCreate={setMap}
+            onSelectCafe={setSelectedCafeId}
           />
         </div>
-      <BottomSheet onReturnToCurrentPosition={handleRecenterMap} />
+      <BottomSheet 
+      onReturnToCurrentPosition={handleRecenterMap}
+      selectedCafeId = {selectedCafeId} 
+      onSelectCafe={setSelectedCafeId}/>
     </div>
   )
 }

@@ -5,13 +5,11 @@ import { CafeDetail } from "./CafeDetail";
 import BottomSheetHeader from "./BottomSheetHeader";
 import { BottomSheetContentLayout } from "./BottomSheetContentLayout"
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { useState } from "react";
 import { LocateFixed } from "lucide-react";
 import type { BottomSheetProps } from "../types/BottomSheetProps";
 
-export const BottomSheet = ({ onReturnToCurrentPosition }: BottomSheetProps) => {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const contentMode = selectedId === null ? "list" : "detail"
+export const BottomSheet = ({ onReturnToCurrentPosition, selectedCafeId, onSelectCafe }: BottomSheetProps) => {
+  const contentMode = selectedCafeId === null ? "list" : "detail"
   const { sheet, content, y } = useBottomSheet(contentMode); 
   return (
     <motion.div
@@ -31,10 +29,10 @@ export const BottomSheet = ({ onReturnToCurrentPosition }: BottomSheetProps) => 
       </button>
       <BottomSheetHeader />
       <BottomSheetContentLayout contentRef={content}>
-        {selectedId !== null ? (
-          <CafeDetail id={selectedId} />
+        {selectedCafeId !== null ? (
+          <CafeDetail id={selectedCafeId} />
         ) : (
-          <CafeList cafes={mockCafes} onSelect={setSelectedId} />
+          <CafeList cafes={mockCafes} onSelect={onSelectCafe} />
         )}
       </BottomSheetContentLayout>
     </motion.div>
