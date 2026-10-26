@@ -4,6 +4,8 @@ export type CafeListProps = {
   name: string;
   distance: number;
   address: string;
+  latitude: number;
+  longitude: number;
   score: number;
   tags: string[];
   imageUrl: string;
