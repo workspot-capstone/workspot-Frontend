@@ -41,3 +41,14 @@ export type CafeDetailProps = {
     reason: string
   }
 }
+
+export type CafeMarkerProps = {
+  cafe: {
+    id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
+  isSelected: boolean;
+  onSelect: (id: number) => void;
+};

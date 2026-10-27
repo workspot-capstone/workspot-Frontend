@@ -1,25 +1,24 @@
-import { CustomOverlayMap, Map, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
 import { mockCafes } from "../mocks/mockCafes";
 import { CurrentLocation } from "./CurrentLocation";
 import type { MapViewProps } from "../types/MapProps";
+import { useCallback } from "react";
+import { CafeMarker } from "./CafeMarker";
 
-export const MapView = ({ currentPosition, onMapCreate, onSelectCafe }: MapViewProps) => {
+export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCafeId }: MapViewProps) => {
   const [loading, error] = useKakaoLoader({
     appkey: import.meta.env.VITE_KAKAO_MAP_API_KEY,
   });
 
   // 지도 중심 좌표
-  const center = currentPosition ? {
-    lat: currentPosition.latitude,
-    lng: currentPosition.longitude,
-  } : {
+  const center = {
     lat: 37.222,
     lng: 127.19,
   };
 
   // 카페 TOP 5를 기준으로 Bound 설정
-  const handleMapCreate = (map: kakao.maps.Map) => {
-    onMapCreate(map); // 지도 생성 후 setMap에 저장
+  const handleMapCreate = useCallback((map: kakao.maps.Map) => {
+    onMapCreate(map); // 지도 생성 후 setMap에 저장, useCallback으로 재렌더링 방지
 
     if (mockCafes.length === 0) return;
 
@@ -32,7 +31,7 @@ export const MapView = ({ currentPosition, onMapCreate, onSelectCafe }: MapViewP
     });
 
     map.setBounds(bounds);
-  };
+  }, [onMapCreate]);
 
   if (loading) {
     return <p role="status">지도를 불러오는 중...</p>;
@@ -66,14 +65,11 @@ export const MapView = ({ currentPosition, onMapCreate, onSelectCafe }: MapViewP
         )}
 
         {mockCafes.map((cafe) => (
-          <MapMarker
+          <CafeMarker
             key={cafe.id}
-            position={{
-              lat: cafe.latitude,
-              lng: cafe.longitude,
-            }}
-            title={cafe.name}
-            onClick={() => onSelectCafe(cafe.id)}
+            cafe={cafe}
+            isSelected={cafe.id === selectedCafeId}
+            onSelect={onSelectCafe}
           />
         ))}
       </Map>

@@ -5,6 +5,7 @@ import { MapView } from "../components/MapView";
 import { Search } from "../components/Search";
 import { ServiceArea } from "../components/ServiceArea"
 import { useGeolocation } from "../hooks/useGeolocation";
+import { mockCafes } from "../mocks/mockCafes";
 
 export const CafeMapPage = () => {
   const [selectedCafeId, setSelectedCafeId] = useState<number | null>(null);
@@ -24,8 +25,17 @@ export const CafeMapPage = () => {
     );
   };
 
+  // 마커 클릭시 지도 중심 이동
+  const handleMarkerSelect = (cafeId: number) => {
+    setSelectedCafeId(cafeId);
+    const cafe = mockCafes.find((cafe) => cafe.id === cafeId);
+    if (!map || !cafe) return;
+
+    map.panTo(new kakao.maps.LatLng(cafe.latitude, cafe.longitude));
+  };
+
+  // API
   const handleSearch = (query: string) => {
-    // API
     console.log('검색어:', query);
   }
 
@@ -36,17 +46,18 @@ export const CafeMapPage = () => {
         content={<ServiceArea content="명지대 일대" />}
         extraContent={<Search onSearch={handleSearch} />}
         contentClassName="w-fit" />
-        <div className="flex-1">
-          <MapView
-            currentPosition={position}
-            onMapCreate={setMap}
-            onSelectCafe={setSelectedCafeId}
-          />
-        </div>
-      <BottomSheet 
-      onReturnToCurrentPosition={handleRecenterMap}
-      selectedCafeId = {selectedCafeId} 
-      onSelectCafe={setSelectedCafeId}/>
+      <div className="flex-1">
+        <MapView
+          currentPosition={position}
+          onMapCreate={setMap}
+          onSelectCafe={handleMarkerSelect}
+          selectedCafeId={selectedCafeId}
+        />
+      </div>
+      <BottomSheet
+        onReturnToCurrentPosition={handleRecenterMap}
+        selectedCafeId={selectedCafeId}
+        onSelectCafe={setSelectedCafeId} />
     </div>
   )
 }
