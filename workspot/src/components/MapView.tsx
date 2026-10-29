@@ -4,6 +4,8 @@ import { CurrentLocation } from "./CurrentLocation";
 import type { MapViewProps } from "../types/MapProps";
 import { useCallback } from "react";
 import { CafeMarker } from "./CafeMarker";
+import LoadingSpinner from "./LoadingSpinner";
+import { ErrorState } from "./ErrorState";
 
 export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCafeId }: MapViewProps) => {
   const [loading, error] = useKakaoLoader({
@@ -18,7 +20,7 @@ export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCa
 
   // 카페 TOP 5를 기준으로 Bound 설정
   const handleMapCreate = useCallback((map: kakao.maps.Map) => {
-    onMapCreate(map); // 지도 생성 후 setMap에 저장, useCallback으로 재렌더링 방지
+    onMapCreate(map); // 지도 생성 후 setMap에 저장
 
     if (mockCafes.length === 0) return;
 
@@ -34,11 +36,19 @@ export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCa
   }, [onMapCreate]);
 
   if (loading) {
-    return <p role="status">지도를 불러오는 중...</p>;
+    return (
+      <div className="flex h-full w-full justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
-
   if (error) {
-    return <p role="alert">지도를 불러오지 못했습니다.</p>;
+    return (
+      <ErrorState
+        message="지도 로딩 중 오류가 발생했어요!"
+        description="잠시 후 다시 시도해주세요"
+      />
+    );
   }
 
   return (

@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BottomSheet } from "../components/BottomSheet";
 import { Header } from "../components/Header"
 import { MapView } from "../components/MapView";
 import { Search } from "../components/Search";
 import { ServiceArea } from "../components/ServiceArea"
 import { useGeolocation } from "../hooks/useGeolocation";
+import { toast } from "sonner";
 import { mockCafes } from "../mocks/mockCafes";
 
 export const CafeMapPage = () => {
   const [selectedCafeId, setSelectedCafeId] = useState<number | null>(null);
-  const { position } = useGeolocation();
+  const { position, error } = useGeolocation();
   // MapView에서 생성된 지도 인스턴스를 저장 
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
 
@@ -38,6 +39,12 @@ export const CafeMapPage = () => {
   const handleSearch = (query: string) => {
     console.log('검색어:', query);
   }
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <div className="flex h-dvh flex-col">
