@@ -1,6 +1,9 @@
 import { Clock, MapPin, Phone, Volume2, Wifi, Plug, Sparkle, Armchair } from "lucide-react"
 import type { ReactNode } from "react"
-import { mockCafeDetails } from "../mocks/mockCafeDetails"
+import { useQuery } from "@tanstack/react-query"
+import { getCafeDetail } from "../apis/cafes"
+import { ErrorState } from "./ErrorState"
+import LoadingSpinner from "./LoadingSpinner"
 import sparkles from "../assets/sparkles.png"
 import type { CafeDetailProps } from "../types/CafeProps"
 
@@ -18,10 +21,28 @@ const environmentItems: {
 ]
 
 export const CafeDetail = ({ id }: { id: number }) => {
-  const cafe = mockCafeDetails.find((cafe) => cafe.id === id)
+  const cafeQuery = useQuery({
+    queryKey: ["cafe", id],
+    queryFn: () => getCafeDetail(id),
+  })
 
+  if (cafeQuery.isPending) {
+    return <LoadingSpinner />
+  }
+
+  if (cafeQuery.isError) {
+    return (
+      <ErrorState
+        message="카페 정보를 불러오지 못했어요."
+        description="잠시 후 다시 시도해주세요."
+        onRetry={() => void cafeQuery.refetch()}
+      />
+    )
+  }
+
+  const cafe = cafeQuery.data
   if (!cafe) {
-    return <p>카페 정보를 찾을 수 없습니다.</p>
+    return <p className="p-6 text-center text-body text-text-description">카페 정보를 찾을 수 없습니다.</p>
   }
 
   const infoItems = [

@@ -1,5 +1,4 @@
 import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
-import { mockCafes } from "../mocks/mockCafes";
 import { CurrentLocation } from "./CurrentLocation";
 import type { MapViewProps } from "../types/MapProps";
 import { useCallback } from "react";
@@ -7,7 +6,7 @@ import { CafeMarker } from "./CafeMarker";
 import LoadingSpinner from "./LoadingSpinner";
 import { ErrorState } from "./ErrorState";
 
-export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCafeId }: MapViewProps) => {
+export const MapView = ({ currentPosition, cafes, onMapCreate, onSelectCafe, selectedCafeId }: MapViewProps) => {
   const [loading, error] = useKakaoLoader({
     appkey: import.meta.env.VITE_KAKAO_MAP_API_KEY,
   });
@@ -22,18 +21,18 @@ export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCa
   const handleMapCreate = useCallback((map: kakao.maps.Map) => {
     onMapCreate(map); // 지도 생성 후 setMap에 저장
 
-    if (mockCafes.length === 0) return;
+    if (cafes.length === 0) return;
 
     const bounds = new kakao.maps.LatLngBounds();
 
-    mockCafes.forEach((cafe) => {
+    cafes.forEach((cafe) => {
       bounds.extend(
         new kakao.maps.LatLng(cafe.latitude, cafe.longitude)
       );
     });
 
     map.setBounds(bounds);
-  }, [onMapCreate]);
+  }, [cafes, onMapCreate]);
 
   if (loading) {
     return (
@@ -74,7 +73,7 @@ export const MapView = ({ currentPosition, onMapCreate, onSelectCafe, selectedCa
           </CustomOverlayMap>
         )}
 
-        {mockCafes.map((cafe) => (
+        {cafes.map((cafe) => (
           <CafeMarker
             key={cafe.id}
             cafe={cafe}

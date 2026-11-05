@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { mockCafes } from "../mocks/mockCafes"
 import { CafeList } from "./CafeList"
 import { CafeDetail } from "./CafeDetail";
 import BottomSheetHeader from "./BottomSheetHeader";
@@ -7,10 +6,13 @@ import { BottomSheetContentLayout } from "./BottomSheetContentLayout"
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { LocateFixed } from "lucide-react";
 import type { BottomSheetProps } from "../types/BottomSheetProps";
+import LoadingSpinner from "./LoadingSpinner";
+import { ErrorState } from "./ErrorState";
 
-export const BottomSheet = ({ onReturnToCurrentPosition, selectedCafeId, onSelectCafe }: BottomSheetProps) => {
+export const BottomSheet = ({ onReturnToCurrentPosition, selectedCafeId, onSelectCafe, cafes, isLoading, isError, onRetry }: BottomSheetProps) => {
   const contentMode = selectedCafeId === null ? "list" : "detail"
   const { sheet, content, y } = useBottomSheet(contentMode); 
+  
   return (
     <motion.div
       ref={sheet}
@@ -31,8 +33,17 @@ export const BottomSheet = ({ onReturnToCurrentPosition, selectedCafeId, onSelec
       <BottomSheetContentLayout contentRef={content}>
         {selectedCafeId !== null ? (
           <CafeDetail id={selectedCafeId} />
+        ) : isLoading ? ( <LoadingSpinner /> ) : 
+        isError ? (
+          <ErrorState
+            message="카페 목록을 불러오지 못했어요."
+            description="잠시 후 다시 시도해주세요."
+            onRetry={onRetry}
+          />
+        ) : cafes.length === 0 ? (
+          <p className="p-6 text-center text-body text-text-description">검색 결과가 없습니다.</p>
         ) : (
-          <CafeList cafes={mockCafes} onSelect={onSelectCafe} />
+          <CafeList cafes={cafes} onSelect={onSelectCafe} />
         )}
       </BottomSheetContentLayout>
     </motion.div>
