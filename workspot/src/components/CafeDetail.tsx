@@ -6,6 +6,7 @@ import { ErrorState } from "./ErrorState"
 import LoadingSpinner from "./LoadingSpinner"
 import sparkles from "../assets/sparkles.png"
 import type { CafeDetailProps } from "../types/CafeProps"
+import { useLocationContext } from "../hooks/useLocationContext"
 
 const environmentItems: {
   key: keyof CafeDetailProps["workspace"]
@@ -21,9 +22,10 @@ const environmentItems: {
 ]
 
 export const CafeDetail = ({ id }: { id: number }) => {
+  const { position } = useLocationContext();
   const cafeQuery = useQuery({
-    queryKey: ["cafe", id],
-    queryFn: () => getCafeDetail(id),
+    queryKey: ["cafe", id, position?.latitude, position?.longitude],
+    queryFn: () => getCafeDetail(id, position),
   })
 
   if (cafeQuery.isPending) {

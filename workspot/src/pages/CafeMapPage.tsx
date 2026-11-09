@@ -6,14 +6,13 @@ import { Header } from "../components/Header"
 import { MapView } from "../components/MapView";
 import { Search } from "../components/Search";
 import { ServiceArea } from "../components/ServiceArea"
-import { useGeolocation } from "../hooks/useGeolocation";
-import { toast } from "sonner";
 import { getCafes, searchCafes } from "../apis/cafes";
 import { getServiceRegion } from "../constants/serviceArea";
+import { useLocationContext } from "../hooks/useLocationContext";
 
 export const CafeMapPage = () => {
   const [selectedCafeId, setSelectedCafeId] = useState<number | null>(null);
-  const { position, error } = useGeolocation();
+  const { position, loading } = useLocationContext();
 
   // MapView에서 생성된 지도 인스턴스를 저장 
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
@@ -23,8 +22,11 @@ export const CafeMapPage = () => {
   const searchQuery = searchParams.get("query")?.trim() ?? "";
   const region = getServiceRegion(searchParams.get("region"));
   const cafesQuery = useQuery({
-    queryKey: ["cafes", searchQuery, region],
-    queryFn: () => searchQuery ? searchCafes(searchQuery, region) : getCafes(region),
+    queryKey: ["cafes", searchQuery, region, position?.latitude, position?.longitude],
+    queryFn: () => searchQuery
+      ? searchCafes(searchQuery, region, position)
+      : getCafes(region, position),
+    enabled: !loading,
     staleTime: 30_000,
   });
 
@@ -61,12 +63,6 @@ export const CafeMapPage = () => {
       return currentParams;
     });
   }
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
 
   // 카페 목록이 변경될 때마다 지도 범위 조정
   useEffect(() => {

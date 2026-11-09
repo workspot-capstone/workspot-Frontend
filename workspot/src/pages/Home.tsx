@@ -7,23 +7,32 @@ import { ErrorState } from '../components/ErrorState'
 import { searchCafes } from '../apis/cafes'
 import { useState } from 'react'
 import { DEFAULT_SERVICE_REGION, type ServiceRegion } from '../constants/serviceArea'
+import type { Coordinates } from '../types/MapProps'
+import { useLocationContext } from '../hooks/useLocationContext'
 
 export const Home = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [region, setRegion] = useState<ServiceRegion>(DEFAULT_SERVICE_REGION);
+  const { position, loading: isLocationLoading } = useLocationContext();
   
   const searchMutation = useMutation({
-    mutationFn: ({ query, region }: { query: string; region: ServiceRegion }) =>
-      searchCafes(query, region),
-    onSuccess: (cafes, { query, region: selectedRegion }) => {
-      queryClient.setQueryData(['cafes', query, selectedRegion], cafes);
+    mutationFn: ({ query, region, position }: {
+      query: string;
+      region: ServiceRegion;
+      position: Coordinates | null;
+    }) => searchCafes(query, region, position),
+    onSuccess: (cafes, { query, region: selectedRegion, position: searchPosition }) => {
+      queryClient.setQueryData(
+        ['cafes', query, selectedRegion, searchPosition?.latitude, searchPosition?.longitude],
+        cafes,
+      );
       navigate(`/map?query=${encodeURIComponent(query)}&region=${encodeURIComponent(selectedRegion)}`);
     },
   })
 
   const handleSearch = (query: string) => {
-    searchMutation.mutate({ query, region });
+    searchMutation.mutate({ query, region, position });
   }
 
   return (
@@ -35,7 +44,7 @@ export const Home = () => {
         contentClassName="whitespace-pre-line text-small text-workspot-gray-500" />
       <div className="w-full px-4">
         <h1 className="w-full mt-12 mb-6 text-left text-title text-workspot-gray-900 whitespace-pre-line">{`오늘 작업하기 쉬운 장소,\n 쉽게 찾아 보세요.`}</h1>
-        <Search onSearch={handleSearch} isLoading={searchMutation.isPending} />
+        <Search onSearch={handleSearch} isLoading={isLocationLoading || searchMutation.isPending} />
         {searchMutation.isError && (
           <ErrorState
             message="검색 결과를 불러오지 못했어요."
