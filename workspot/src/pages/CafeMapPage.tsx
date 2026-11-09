@@ -9,6 +9,7 @@ import { ServiceArea } from "../components/ServiceArea"
 import { useGeolocation } from "../hooks/useGeolocation";
 import { toast } from "sonner";
 import { getCafes, searchCafes } from "../apis/cafes";
+import { getServiceRegion } from "../constants/serviceArea";
 
 export const CafeMapPage = () => {
   const [selectedCafeId, setSelectedCafeId] = useState<number | null>(null);
@@ -20,9 +21,10 @@ export const CafeMapPage = () => {
   // 검색어에 따른 카페 목록 조회
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("query")?.trim() ?? "";
+  const region = getServiceRegion(searchParams.get("region"));
   const cafesQuery = useQuery({
-    queryKey: ["cafes", searchQuery],
-    queryFn: () => searchQuery ? searchCafes(searchQuery) : getCafes(),
+    queryKey: ["cafes", searchQuery, region],
+    queryFn: () => searchQuery ? searchCafes(searchQuery, region) : getCafes(region),
     staleTime: 30_000,
   });
 
@@ -49,7 +51,15 @@ export const CafeMapPage = () => {
 
   const handleSearch = (query: string) => {
     setSelectedCafeId(null);
-    setSearchParams({ query });
+    setSearchParams({ query, region });
+  }
+
+  const handleRegionChange = (nextRegion: typeof region) => {
+    setSelectedCafeId(null);
+    setSearchParams((currentParams) => {
+      currentParams.set("region", nextRegion);
+      return currentParams;
+    });
   }
 
   useEffect(() => {
@@ -73,7 +83,7 @@ export const CafeMapPage = () => {
     <div className="flex h-dvh flex-col">
       <Header
         title="Workspot"
-        content={<ServiceArea content="명지대 일대" />}
+        content={<ServiceArea region={region} onRegionChange={handleRegionChange} />}
         extraContent={
           <Search
             key={searchQuery}
