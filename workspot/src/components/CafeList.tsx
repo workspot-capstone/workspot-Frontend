@@ -11,7 +11,11 @@ export const CafeList = ({cafes, onSelect} : CafeListComponentProps) => {
           onClick={() => onSelect(cafe.id)}
           className="mx-2.5 mb-6 flex w-[calc(100%-1.5rem)] items-center gap-2.5 border-0 bg-transparent p-0 text-left"
         >
-          <img src={cafe.imageUrl} alt={`${cafe.name} 이미지`} className="w-19 h-16 rounded-md object-cover" />
+          {cafe.imageUrl ? (
+            <img src={cafe.imageUrl} alt={`${cafe.name} 이미지`} className="w-19 h-16 shrink-0 rounded-md object-cover" />
+          ) : (
+            <div aria-hidden="true" className="w-19 h-16 shrink-0 rounded-md bg-workspot-gray-100" />
+          )}
           <div className="w-full">
             <div className="flex justify-between items-center">
               <h2 className="text-body font-bold text-text-primary">{cafe.name}</h2>

@@ -45,6 +45,7 @@ export const CafeDetail = ({ id }: { id: number }) => {
     return <p className="p-6 text-center text-body text-text-description">카페 정보를 찾을 수 없습니다.</p>
   }
 
+  const imageUrl = cafe.imageUrls?.[0]
   const infoItems = [
     { icon: <MapPin aria-hidden="true" className="h-4 w-4 text-gray-700" />, text: cafe.address },
     { icon: <Clock aria-hidden="true" className="h-4 w-4 text-gray-700" />, text: cafe.operatingHours },
@@ -54,7 +55,11 @@ export const CafeDetail = ({ id }: { id: number }) => {
   return (
     <div className="mx-4">
       <div data-middle-snap>
-        <img src={cafe.imageUrls[0]} alt={`${cafe.name} 이미지`} className="w-full h-55 rounded-lg object-cover" />
+        {imageUrl ? (
+          <img src={imageUrl} alt={`${cafe.name} 이미지`} className="w-full h-55 rounded-lg object-cover" />
+        ) : (
+          <div aria-hidden="true" className="h-55 w-full rounded-lg bg-workspot-gray-100" />
+        )}
         <div className="flex justify-between items-center gap-2 my-4">
           <h1 className="text-title">{cafe.name}</h1>
           <p className="text-body text-text-description pr-1">{cafe.distance}m</p>

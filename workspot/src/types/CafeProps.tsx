@@ -8,7 +8,7 @@ export type CafeListProps = {
   longitude: number;
   score: number;
   tags: string[];
-  imageUrl: string;
+  imageUrl: string | null;
 }
 
 export type CafeListComponentProps = {
@@ -25,7 +25,7 @@ export type CafeDetailProps = {
   address: string
   operatingHours: string
   phone: string
-  imageUrls: string[]
+  imageUrls: string[] | null
 
   workspace: {
     noise: WorkspaceStatus
